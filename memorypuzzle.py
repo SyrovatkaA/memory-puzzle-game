@@ -1,10 +1,12 @@
-# Memory Puzzle
-# By Al Sweigart
+"""
+Memory Puzzle Game
+By Al Sweigart
+"""
 
 import sys
 import random
 import pygame
-from pygame.locals import *
+import pygame.locals
 
 FPS = 30 # frames per second
 WINDOWWIDTH = 640 # width of the whole window in px
@@ -18,7 +20,6 @@ assert (BOARDWIDTH * BOARDHEIGHT) % 2 == 0, 'Board needs to have an even number 
 XMARGIN = int((WINDOWWIDTH - (BOARDWIDTH * (BOXSIZE + GAPSIZE))) / 2) # calculate margin between left/right border of the window and the nearest card
 YMARGIN = int((WINDOWHEIGHT - (BOARDHEIGHT * (BOXSIZE + GAPSIZE))) / 2) # calculate margin between top/bottom border of the window and the nearest card
 
-#             R    G    B
 GRAY = (100, 100, 100)
 NAVYBLUE = (60, 60, 100)
 WHITE = (255, 255, 255)
@@ -46,6 +47,7 @@ ALLSHAPES = (DONUT, SQUARE, DIAMOND, LINES, OVAL)
 assert len(ALLCOLORS) * len(ALLSHAPES) * 2 >= BOARDWIDTH * BOARDHEIGHT, 'Board is too big for the number of shapes/colors defined.' # make sure that all combinations of shape and color can fit into the board (maybe more but not less)
 
 def main():
+    """The main part of the game code"""
     global FPSCLOCK, DISPLAYSURF
     pygame.init()
     FPSCLOCK = pygame.time.Clock()
@@ -70,12 +72,12 @@ def main():
         draw_board(main_board, revealed_boxes)
 
         for event in pygame.event.get():
-            if event.type == QUIT or (event.type == KEYUP and event.key == K_ESCAPE):
+            if event.type == pygame.locals.QUIT or (event.type == pygame.locals.KEYUP and event.key == pygame.locals.K_ESCAPE):
                 pygame.quit()
                 sys.exit()
-            elif event.type == MOUSEMOTION:
+            elif event.type == pygame.locals.MOUSEMOTION:
                 mousex, mousey = event.pos
-            elif event.type == MOUSEBUTTONUP:
+            elif event.type == pygame.locals.MOUSEBUTTONUP:
                 mousex, mousey = event.pos
                 mouse_clicked = True
 
@@ -123,6 +125,7 @@ def main():
 
 
 def generate_revealed_boxes_data(val):
+    """Generates a list of lists of bool values"""
     revealed_boxes = []
     for i in range(BOARDWIDTH):
         revealed_boxes.append([val] * BOARDHEIGHT)
@@ -130,6 +133,7 @@ def generate_revealed_boxes_data(val):
 
 
 def get_randomized_board():
+    """Generates a list of lists of tuples"""
     # Get a list of every possible shape in every possible color
     icons = []
     for color in ALLCOLORS:
@@ -152,12 +156,11 @@ def get_randomized_board():
     return board
 
 
-def split_into_groups_of(groupSize, theList):
-    # splits a list into a list of lists, where the inner lists have at
-    # most groupSize number of items
+def split_into_groups_of(group_size, the_list):
+    """Split a list into a list of lists where the inner lists have at most group_size number of items"""
     result = []
-    for i in range(0, len(theList), groupSize):
-        result.append(theList[i:i + groupSize])
+    for i in range(0, len(the_list), group_size):
+        result.append(the_list[i:i + group_size])
     return result
 
 
